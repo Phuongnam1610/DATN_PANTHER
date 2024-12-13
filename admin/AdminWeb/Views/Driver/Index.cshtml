@@ -1,0 +1,130 @@
+@model IEnumerable<Driver>
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Quản lý tài xế";
+}
+
+<h1>Quản lý tài xế</h1>
+
+@* <p>
+    <a asp-action="Create" asp-controller="Driver" class="btn btn-primary">Thêm tài xế mới</a>
+</p> *@
+
+<div class="row mb-3">
+    <div class="col-md-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm...">
+    </div>
+
+</div>
+
+<div class="table-responsive">
+    <table class="table" id="driversTable">
+        <thead>
+            <tr>
+                <th>
+                    Mã tài xế
+                </th>
+                <th>
+                    Tên tài xế
+                </th>
+                <th>
+                    Hình ảnh
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Số điện thoại
+                </th>
+                <th>
+                    Giới tính
+                </th>
+
+                <th>
+                    Trạng thái
+                </th>
+                <th>
+                    Đánh giá
+                </th>
+                <th>
+                    Sức chứa
+                </th>
+                <th>
+                    Màu sắc
+                </th>
+                <th>
+                    Model
+                </th>
+                <th>
+                    Loại phương tiện
+                </th>
+                <th>
+                    Xác minh
+                </th>
+                <th>
+                    Banned
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            loadDriver();
+
+            $('#searchInput').on('input', function () {
+                loadDriver();
+            });
+
+        });
+        function loadDriver() {
+            var searchText = $('#searchInput').val();
+
+            $.ajax({
+                url: '/Driver/GetDrivers',
+                type: 'GET',
+                data: {
+                    searchText: searchText,
+                },
+                success: function (drivers) {
+                    $('#driversTable tbody').empty();
+                    drivers.forEach(function (driver) {
+                        var row = $('<tr>');
+                        row.append('<td>' + driver.id + '</td>');
+                        row.append('<td>' + driver.name + '</td>');
+                        row.append('<td><a href="' + driver.imageUrl + '" target="_blank"><img src="' + driver.imageUrl + '" alt="Ảnh của tài xế" style="max-width:100px; max-height:100px;"></a></td>');
+                        row.append('<td>' + driver.email + '</td>');
+                        row.append('<td>' + driver.phoneNumber + '</td>');
+                        row.append('<td>' + driver.gender + '</td>');
+        @* row.append('<td>' +   `(${ride.dropoffLocation.latitude}, ${ride.dropoffLocation.longitude})` + '</td>'); *@
+                            row.append('<td>' + driver.status + '</td>');
+                        var ratingLink = $('<a>')
+                            .attr('href', '/Driver/Rating/' + driver.id)
+                            .text(driver.rating);
+                        row.append($('<td>').append(ratingLink)); row.append('<td>' + driver.vehicle.capacity + '</td>');
+                        row.append('<td>' + driver.vehicle.color + '</td>');
+                        row.append('<td>' + driver.vehicle.model + '</td>');
+                        row.append('<td>' + driver.vehicle.vehicleTypeId + '</td>');
+                        row.append('<td>' + driver.verify + '</td>');
+                        row.append('<td>' + driver.banned + '<td>');
+        @* row.append('<td>' + driver.rating + '</td>'); *@
+                            row.append('<td>' +
+                                '<a href="/Driver/Edit/' + driver.id + '" class="btn btn-warning btn-sm">Sửa</a>' +
+                                '</td>');
+                        $('#driversTable tbody').append(row);
+                    });
+                },
+                error: function () {
+                    alert("Lỗi khi tải danh sách driver.");
+                }
+            });
+        }
+
+
+    </script>
+}

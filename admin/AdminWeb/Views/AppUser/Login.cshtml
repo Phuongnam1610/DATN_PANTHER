@@ -1,0 +1,92 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Đăng nhập";
+Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>Đăng nhập</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" id="loginForm">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Email" class="form-label">Email:</label>
+                            <input asp-for="Email" class="form-control" placeholder="Nhập email" id="email">
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Password" class="form-label">Mật khẩu:</label>
+                            <input asp-for="Password" class="form-control" type="password" placeholder="Nhập mật khẩu" id="password">
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="button" class="btn btn-primary" id="loginBtn">Đăng nhập</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDi91wrxd7Ka0ewagpdJ3pBFjg2AsECDQs",
+            authDomain: "pantherapp010-1b674.firebaseapp.com",
+            projectId: "pantherapp010-1b674",
+            storageBucket: "pantherapp010-1b674.appspot.com",
+            messagingSenderId: "814014166491",
+            appId: "1:814014166491:web:e942b32b69210f92e7a3fe",
+            measurementId: "G-8HEQZ1DBYF"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app); // Get the auth instance
+
+        //This is the function to handle the login logic.
+        async function firebaseLogin() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const idToken = await userCredential.user.getIdToken();
+
+                const response = await fetch('/AppUser/Login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ idToken: idToken })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Redirect to Index after successful login
+                    window.location.href = "Success"; //or specific URL if needed.  
+                } else {
+                    alert("Login failed: " + data.message);
+                }
+            } catch (error) {
+                console.error("Login failed:", error);
+                alert("Login failed. Please check your credentials.");
+            }
+        }
+        document.getElementById('loginBtn').addEventListener('click', firebaseLogin);
+
+    </script>
+   
+}

@@ -1,0 +1,100 @@
+@model IEnumerable<Prompt>
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Quản lý Chatbot";
+}
+
+<h1>Quản lý Chatbot</h1>
+
+<p>
+    <a asp-action="Create" asp-controller="Prompt" class="btn btn-primary">Thêm prompt mới</a>
+</p>
+
+<div class="row mb-3">
+    <div class="col-md-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm...">
+    </div>
+
+</div>
+
+<div class="table-responsive">
+    <table class="table" id="promptsTable">
+        <thead>
+            <tr>
+                <th>
+                    Câu hỏi
+                </th>
+                <th>
+                    Phản hồi
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            loadPrompt();
+            $('#promptsTable').on('click', '.delete-prompt', function () {
+                var promptId = $(this).data('id');
+                if (confirm("Bạn có chắc chắn muốn xóa prompt này?")) {
+                    $.ajax({
+                        url: '/Prompt/Delete/' + promptId,
+                        type: 'POST',
+                        success: function (data) {
+                            if (data.success) {
+                                loadPrompt();
+                                alert(data.message);
+                            } else {
+                                alert(data.message);
+                            }
+                        },
+                        error: function (error) {
+                            alert("Lỗi khi xóa prompt. " + error.message);
+                        }
+                    });
+                }
+            });
+            $('#searchInput').on('input', function () {
+                loadPrompt();
+            });
+
+        });
+        function loadPrompt() {
+            var searchText = $('#searchInput').val();
+            var maxLength = 50; // Adjust this value as needed
+
+            $.ajax({
+                url: '/Prompt/GetPrompts',
+                type: 'GET',
+                data: {
+                    searchText: searchText,
+                },
+                success: function (prompts) {
+                    $('#promptsTable tbody').empty();
+                    prompts.forEach(function (prompt) {
+                        var shortQuestion = prompt.question.length > maxLength ? prompt.question.substring(0, maxLength) + "..." : prompt.question;
+                        var shortResponse = prompt.responses.length > maxLength ? prompt.responses.substring(0, maxLength) + "..." : prompt.responses;
+
+                        var row = $('<tr>');
+                        row.append('<td>' + shortQuestion + '</td>');
+                        row.append('<td>' + shortResponse + '</td>');
+                        row.append('<td>' +
+                            '<a href="/Prompt/Edit/' + prompt.id + '" class="btn btn-warning btn-sm">Sửa</a> | ' +
+                            '<a href="#" data-id="' + prompt.id + '" class="btn btn-danger btn-sm delete-prompt">Xóa</a>' +
+                            '</td>');
+                        $('#promptsTable tbody').append(row);
+                    });
+                },
+                error: function () {
+                    alert("Lỗi khi tải danh sách prompt.");
+                }
+            });
+        }
+    </script>
+}

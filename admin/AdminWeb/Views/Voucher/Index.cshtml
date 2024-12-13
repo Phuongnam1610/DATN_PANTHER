@@ -1,0 +1,141 @@
+@model IEnumerable<Voucher>
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Quản lý Voucher";
+}
+
+<h1>Quản lý Voucher</h1>
+
+<p>
+    <a asp-action="Create" asp-controller="Voucher" class="btn btn-primary">Thêm voucher mới</a>
+</p>
+
+<div class="row mb-3">
+    <div class="col-md-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm...">
+    </div>
+    <div class="col-md-3">
+        <select id="discountTypeFilter" class="form-control">
+            <option value="">Tất cả loại giảm giá</option>
+            <option value="percentage">Phần trăm</option>
+            <option value="fixed">Số tiền cố định</option>
+        </select>
+    </div>
+    <div class="col-md-3">  <!-- Added IsActive filter -->
+        <select id="isActiveFilter" class="form-control">
+            <option value="">Tất cả trạng thái</option>
+            <option value="true">Hoạt động</option>
+            <option value="false">Ngừng hoạt động</option>
+        </select>
+    </div>
+  
+</div>
+
+<div class="table-responsive">
+<table class="table" id="vouchersTable">
+    <thead>
+        <tr>
+            <th>
+                Mã
+            </th>
+            <th>
+                Loại giảm giá
+            </th>
+            <th>
+                Giá trị
+            </th>
+            <th>
+                Tổng số 
+            </th>
+            <th>
+                Đã sử dụng
+            </th>
+            <th>
+                Ngày bắt đầu
+            </th>
+            <th>
+                Ngày kết thúc
+            </th>
+            <th>
+                Trạng thái
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            loadVoucher();
+            $('#vouchersTable').on('click', '.delete-voucher', function () {
+                var voucherId = $(this).data('id');
+                if (confirm("Bạn có chắc chắn muốn xóa voucher này?")) {
+                    $.ajax({
+                        url: '/Voucher/Delete/' + voucherId,
+                        type: 'POST',
+                        success: function (data) {
+                            if (data.success) {
+                                loadVoucher();
+                                alert(data.message);
+                            } else {
+                                alert(data.message);
+                            }
+                        },
+                        error: function (error) {
+                            alert("Lỗi khi xóa voucher. " + error.message);
+                        }
+                    });
+                }
+            });
+            $('#searchInput').on('input', function () {
+                loadVoucher();
+            });
+            $('#discountTypeFilter, #isActiveFilter').on('change', function () {
+                loadVoucher();
+            });
+        });
+        function loadVoucher() {
+            var searchText = $('#searchInput').val();
+            var discountTypeFilter = $('#discountTypeFilter').val();
+            @* var validFromFilter = $('#validFromFilter').val(); *@
+            @* var validUntilFilter = $('#validUntilFilter').val(); *@
+            var isActiveFilter = $('#isActiveFilter').val(); 
+            $.ajax({
+                url: '/Voucher/GetVouchers',
+                type: 'GET',
+                data: {
+                    searchText: searchText,
+                    discountTypeFilter: discountTypeFilter,
+                    @* validFromFilter: validFromFilter, *@
+                    @* validUntilFilter: validUntilFilter, *@
+                     isActiveFilter: isActiveFilter 
+                },
+                success: function (vouchers) {
+                    $('#vouchersTable tbody').empty();
+                    vouchers.forEach(function (voucher) {
+                        var row = $('<tr>');
+                        row.append('<td>' + voucher.code + '</td>');
+                        row.append('<td>' + voucher.discountType + '</td>');
+                        row.append('<td>' + voucher.discountValue + '</td>');
+                        row.append('<td>' + voucher.usageLimit + '</td>');
+                        row.append('<td>' + voucher.usedCount + '</td>');
+                        row.append('<td>' + voucher.validFromString + '</td>');
+                        row.append('<td>' + voucher.validUntilString + '</td>');
+                        row.append('<td>' + (voucher.IsActive ? 'Hoạt động' : 'Ngừng hoạt động') + '</td>'); // Add IsActive column
+                        row.append('<td>' +
+                            '<a href="/Voucher/Edit/' + voucher.id + '" class="btn btn-warning btn-sm">Sửa</a> | '  +
+                            '</td>');
+                        $('#vouchersTable tbody').append(row);
+                    });
+                },
+                error: function () {
+                    alert("Lỗi khi tải danh sách voucher.");
+                }
+            });
+        }
+    </script>
+}

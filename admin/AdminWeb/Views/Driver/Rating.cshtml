@@ -1,0 +1,44 @@
+@model IEnumerable<Rating>
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Đánh giá tài xế</h1>
+
+<div class="table-responsive">
+<table class="table" id="ratingsTable">
+    <thead>
+        <tr>
+            <th>
+                Mã đánh giá
+            </th>
+            <th>
+                Comment
+            </th>
+            <th>
+                Số sao
+            </th>
+            <th>
+                Thời gian
+            </th>
+            <th>
+                Mã chuyến đi
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rating in Model)
+        {
+            <tr>
+                <td>@rating.id</td>
+                <td>@rating.comment</td>
+                <td>@rating.rating</td>  <!-- Assuming 'rating' holds the star rating -->
+                <td>@rating.dcreatedAt</td> <!-- Format the date as needed -->
+                <td>@rating.rideId</td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+
+@* Remove the Scripts section entirely as it's no longer needed *@

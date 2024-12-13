@@ -1,0 +1,47 @@
+﻿/* Mobile: width <740px */
+
+@media only screen and (max-width: 46.1875em) {
+
+    .header-middle .container {
+        display: block;
+    }
+    .header-middle-right {
+        margin-top: 10px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    .header-sign-btn{
+        margin-right: 15px;
+    }
+
+}
+
+/* Tablet: width >=740px and width <1024px */
+@media only screen and (min-width: 46.25em) and (max-width: 63.9375em) {
+
+}
+/* Mobile và tablet width <1024px */
+@media only screen and (max-width: 63.9375em) {
+    .header-logo{
+        display: none;
+    }
+    .widget-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 0 15px;
+    }
+
+    .widget-row-col-1 {
+        width: 100%;
+        padding-bottom: 20px;
+    }
+
+    .widget-row-col {
+        width: 50%;
+        padding-bottom: 20px;
+    }
+    .header-middle-center {
+        padding: 0;
+    }
+}

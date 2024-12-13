@@ -1,0 +1,91 @@
+@model IEnumerable<Payment>
+
+@{
+	ViewData["Title"] = "Doanh thu";
+	Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Lịch sử giao dịch</h1>
+
+<div class="row mb-3">
+	<div class="col-md-3">
+		<label for="startDate">Từ ngày:</label>
+		<input type="date" id="startDate" name="startDate" class="form-control" />
+	</div>
+	<div class="col-md-3">
+		<label for="endDate">Đến ngày:</label>
+		<input type="date" id="endDate" name="endDate" class="form-control" />
+	</div>
+	<div class="col-md-3">
+		<button id="filterButton" class="btn btn-primary mt-4">Thống kê</button>
+	</div>
+</div>
+<div class="d-flex justify-content-between align-items-center mb-3">
+	<!-- Added Bootstrap classes for better layout -->
+	<p>Tổng tiền tài xế đã nộp: <span id="totalPayment"></span></p>
+</div>
+
+
+<div class="table-responsive">
+	<table class="table table-striped table-bordered" id="revenueTable">
+		<thead>
+			<tr>
+				<th>Mã giao dịch</th>
+				<th>Thời gian</th>
+				<th>Số tiền</th>
+				<th>Mã tài xế</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+
+@section Scripts {
+	<script>
+				document.getElementById('filterButton').addEventListener('click', function () {
+					const startDate = document.getElementById('startDate').value;
+					const endDate = document.getElementById('endDate').value;
+
+					fetch('/Admin/GetPayment', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({ startDate: startDate, endDate: endDate })
+					})
+						.then(response => {
+							if (response.ok) {
+								return response.json();
+							} else {
+								return response.text().then(text => {
+									throw new Error(text || response.statusText);
+								});
+							}
+						})
+						.then(data => {
+							displayRevenueData(data.value);
+						})
+						.catch(error => {
+							alert("Error: " + error.message);
+						});
+				});
+
+				function displayRevenueData(data) {
+					const tableBody = document.querySelector('#revenueTable tbody');
+					tableBody.innerHTML = '';
+
+					document.getElementById('totalPayment').textContent = data.totalPayment.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
+					data = JSON.parse(data.payments);
+					data.forEach(payment => {
+				const row = tableBody.insertRow();
+						row.insertCell().textContent = payment.id; // Mã chuyến
+						row.insertCell().textContent = payment.dcreatedAt; // Thời gian tạo
+								row.insertCell().textContent = payment.amount; // Thời gian tạo
+								row.insertCell().textContent = payment.driverId; // Mã tài xế
+
+			});
+		}
+	</script>
+}

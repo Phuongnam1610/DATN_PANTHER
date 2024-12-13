@@ -1,0 +1,343 @@
+﻿* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+:root {
+    --white: #fff;
+    --black: #000;
+    --text-color: #333;
+    --key: #B5292F;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+    background-color: #fff;
+    position: relative;
+}
+body, input, button, textarea, pre {
+    font-family: SFProDisplay, sans-serif;
+}
+
+ul,
+li {
+    list-style: none;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+.container {
+    max-width: 1200px;
+    padding: 0 10px;
+    margin: 0 auto;
+}
+
+header {
+    background-color: var(--white);
+    position: sticky;
+    top: 0;
+    z-index: 15;
+}
+
+.header-middle {
+    box-shadow: inset 0px -0.5px 0px #e6e6e6;
+}
+
+.header-middle .container {
+    padding: 7px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-logo-img {
+    width: 160px;
+    height: 90%;
+    border-radius: 4px;
+}
+
+.header-middle-center {
+    padding: 0 30px;
+    flex: 1;
+}
+
+.form-search {
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.form-search-input {
+    height: 40px;
+    outline: none;
+    border: none;
+    background-color: #f0f0f0;
+    padding: 10px 20px;
+    padding-left: 0;
+    border-top-right-radius: 99px;
+    border-bottom-right-radius: 99px;
+    width: 65%;
+}
+.header-search, .search-btn {
+    border: none;
+    outline: none;
+    font-size: 20px;
+    height: 40px;
+    padding: 0 15px;
+    color: var(--text-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+.search-btn {
+    background-color: #f0f0f0;
+    border-top-left-radius: 99px;
+    border-bottom-left-radius: 99px;
+}
+
+
+.header-search {
+    background-color: var(--key);
+    color: var(--white);
+    width: 75px;
+    border-radius: 99px;
+    position: relative;
+    right: 70px;
+    font-size: 15px;
+}
+.header-search {
+    font-size: 14px;
+    margin-left: 5px;
+}
+.header-sign-btn {
+    border: none;
+    background: none;
+    font-size: 15px; /* Giảm kích thước font chữ */
+    padding: 10px 20px; /* Giảm khoảng cách giữa các phần tử bên trong nút */
+    border-radius: 99px;
+    color: var(--key);
+}
+
+.header-sign {
+    padding-right: 20px;
+    display: flex;
+    align-items: center; /* Căn giữa các phần tử trong phần đăng ký và đăng nhập */
+}
+
+.header-sign-up {
+    color: var(--white);
+    font-weight: 500;
+    background-color: var(--key);
+}
+
+.header-sign-in {
+    color: var(--white);
+    font-weight: 500;
+    background-color: var(--key);
+}
+
+.header-sign-up:hover {
+    color: rgb(255, 255, 255);
+    background-color: rgba(181, 41, 46,0.8);
+    cursor: pointer;
+}
+
+.header-sign-in:hover {
+    color: rgb(255, 255, 255);
+    background-color: rgba(181, 41, 46,0.8);
+    cursor: pointer;
+}
+.header-bottom {
+    transition: transform 0.6s ease;
+    position: fixed;
+    left: 0;
+    right: 0;
+    background-color: var(--white);
+    box-shadow: 0 3px 5px 0 rgb(0 0 0 / 10%);
+    z-index: 4;
+}
+
+.menu-list {
+    display: flex;
+    height: 49px;
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin-right: 50px;
+}
+
+.menu-link {
+    color: var(--black);
+    display: inline-block;
+    padding: 15px 20px;
+    text-transform: uppercase;
+    position: relative;
+    font-size: 15px;
+}
+
+.menu-link:hover::after {
+    visibility: visible;
+    transform: scale(1);
+    opacity: 1;
+}
+
+.menu-link::after {
+    content: "";
+    position: absolute;
+    height: 2px;
+    visibility: hidden;
+    transform: scale(0);
+    opacity: 0;
+    transition: visibility 0.3s, transform 0.3s, opacity 0.3s;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    background-color: var(--key);
+    transition: all 0.3s ease;
+}
+
+/*footer*/
+.footer {
+    background-color: #f2f2f2;
+    margin-top: 30px;
+    border-top: 4px solid var(--key);
+}
+
+.footer .container {
+    margin: 0 auto;
+    display: block;
+}
+
+.widget-area {
+    padding: 60px 0 30px;
+}
+
+.widget-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.widget-row-col {
+    width: 15%;
+}
+
+.widget-row-col-1 {
+    width: 25%;
+}
+
+.widget-row > div {
+    padding: 0 10px 10px;
+}
+
+.widget-title {
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+    .widget-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        border-top: none;
+        height: 3px;
+        width: 100px;
+        background-image: linear-gradient(to right, var(--key), transparent);
+    }
+
+.widget-row-col-content {
+    padding-bottom: 18px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.widget-social {
+    display: flex;
+}
+
+.widget-social-item {
+    margin: 5px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #2C2C2C;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s linear;
+}
+
+.widget-contact-item {
+    margin-bottom: 12px;
+}
+
+    .widget-contact-item i {
+        transition: transform 0.3s linear;
+    }
+
+    .widget-contact-item a {
+        color: #2C2C2C;
+    }
+
+    .widget-contact-item:hover i {
+        transform: translateX(4px);
+    }
+
+.widget-social-item:hover {
+    background-color: var(--key);
+    transform: scale(1.1);
+    border: none;
+}
+
+    .widget-social-item:hover i {
+        color: #fff;
+    }
+
+.widget-social-item i {
+    color: #2C2C2C;
+}
+
+.widget-contact i {
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.widget-contact span {
+    font-weight: 400;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.contact-item-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--key);
+    color: var(--white)
+}
+
+.contact-content {
+    margin-left: 10px;
+    width: 80%;
+    line-height: 1.5;
+    font-size: 15px;
+}

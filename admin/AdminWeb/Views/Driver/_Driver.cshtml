@@ -1,0 +1,105 @@
+@model AdminWeb.Models.Driver
+
+@{
+    string action = ViewBag.Action ?? string.Empty;
+    var listGender = new List<SelectListItem>{
+        new SelectListItem { Value = "Nam", Text = "Nam" },
+        new SelectListItem { Value = "Nữ", Text = "Nữ" }};
+    var listVehicles = new List<SelectListItem>
+{
+new SelectListItem { Value = "oto", Text = "Ô tô" },
+new SelectListItem { Value = "xemay", Text = "Xe máy" }};
+}
+
+@* <h2>@action Tài xế</h2> *@
+
+<form asp-action="@action" asp-controller="Driver" method="post" enctype="multipart/form-data">
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+    @if (action == "Edit")
+    {
+        <input type="hidden" asp-for="id" />
+        <input type="hidden" asp-for="status" />
+        <input type="hidden" asp-for="vehicleOnId" />
+        <input type="hidden" asp-for="location" />
+        <input type="hidden" asp-for="vehicle.driverId" />
+        <input type="hidden" asp-for="role" />
+        <input type="hidden" asp-for="email " />
+        <input type="hidden" asp-for="rating"/>
+    }
+
+    <div class="form-group">
+        <label asp-for="name" class="control-label">Họ Tên</label>
+        <input asp-for="name" class="form-control" />
+        <span asp-validation-for="name" class="text-danger"></span>
+    </div>
+@* 
+    <div class="form-group">
+        <label asp-for="email" class="control-label">Email</label>
+        <input asp-for="email" class="form-control" />
+        <span asp-validation-for="email" class="text-danger"></span>
+    </div> *@
+
+
+    <div class="form-group">
+        <label asp-for="phoneNumber" class="control-label">Số điện thoại</label>
+        <input asp-for="phoneNumber" class="form-control" />
+        <span asp-validation-for="phoneNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="imageUrl" class="control-label">Ảnh đại diện</label>
+        <input asp-for="imageUrl" class="form-control" />
+        <span asp-validation-for="imageUrl" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="gender" class="control-label"></label>
+        <select asp-for="gender" asp-items="listGender" class="form-control">
+            <option value="">Giới tính</option>
+
+        </select>
+        <span asp-validation-for="gender" class="text-danger"></span>
+    </div>
+    <!-- Add more fields here for imageUrl, gender, role, status, vehicleOnId, verify, banned, earning, weeklyFeeStatus, rating, location -->
+    <div class="form-group">
+        <label asp-for="verify" class="control-label">Xác minh</label>
+        <input asp-for="verify" type="checkbox" />
+        <span asp-validation-for="verify" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="banned" class="control-label">Chặn</label>
+        <input asp-for="banned" type="checkbox" />
+        <span asp-validation-for="banned" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="vehicle.vehicleTypeId" class="control-label"></label>
+        <select asp-for="vehicle.vehicleTypeId" asp-items="listVehicles" class="form-control">
+            <option value="">Loại xe</option>
+        </select>
+        <span asp-validation-for="vehicle.vehicleTypeId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.vehicle.capacity" class="control-label">Sức chứa</label>
+        <input asp-for="@Model.vehicle.capacity" class="form-control" />
+        <span asp-validation-for="@Model.vehicle.capacity" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="vehicle.color" class="control-label">Màu sắc</label>
+        <input asp-for="vehicle.color" class="form-control" />
+        <span asp-validation-for="vehicle.color" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="vehicle.licensePlate" class="control-label">Biển số xe</label>
+        <input asp-for="vehicle.licensePlate" class="form-control" />
+        <span asp-validation-for="vehicle.licensePlate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="vehicle.model" class="control-label">Model</label>
+        <input asp-for="vehicle.model" class="form-control" />
+        <span asp-validation-for="vehicle.model" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary btn-block" />
+    </div>
+</form>

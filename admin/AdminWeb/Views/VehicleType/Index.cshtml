@@ -1,0 +1,73 @@
+@model IEnumerable<VehicleType>
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Quản lý phương tiện";
+}
+
+<h1>Quản lý phương tiện</h1>
+
+<div class="table-responsive">
+    <table class="table" id="vehicletypesTable">
+        <thead>
+            <tr>
+                <th>
+                    Loại xe
+                </th>
+                <th>
+                    Giá cơ bản
+                </th>
+                <th>
+                    Giá cho 5km
+                </th>
+                <th>
+                    Giá cho 10km
+                </th>
+                <th>
+                    Giá cho mỗi km
+                </th>
+                <th>
+                    Hệ số
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            loadVehicleType();
+        });
+        function loadVehicleType() {
+
+            $.ajax({
+                url: '/VehicleType/GetVehicleType',
+                type: 'GET',
+                data: {
+                },
+                success: function (vehicletypes) {
+                    $('#vehicletypesTable tbody').empty();
+                    vehicletypes.forEach(function (vehicletype) {
+                        var row = $('<tr>');
+                        row.append('<td>' + vehicletype.type + '</td>');
+                        row.append('<td>' + vehicletype.baseFare + '</td>');
+                        row.append('<td>' + vehicletype.fareFor5km + '</td>');
+                        row.append('<td>' + vehicletype.fareFor10km + '</td>');
+                        row.append('<td>' + vehicletype.farePerkm + '</td>');
+                        row.append('<td>' + vehicletype.multiplier + '</td>');
+                        row.append('<td>' +
+                            '<a href="/VehicleType/Edit/' + vehicletype.id + '" class="btn btn-warning btn-sm">Sửa</a> | ' +
+                            '</td>');
+                        $('#vehicletypesTable tbody').append(row);
+                    });
+                },
+                error: function () {
+                    alert("Lỗi khi tải danh sách vehicletype.");
+                }
+            });
+        }
+    </script>
+}

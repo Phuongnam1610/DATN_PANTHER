@@ -1,0 +1,50 @@
+@model AdminWeb.Models.VehicleType
+
+@{
+    string action = ViewBag.Action ?? string.Empty;
+}
+
+<form asp-action="@action" asp-controller="VehicleType" method="post">
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        <input type="hidden" asp-for="type" /> <!-- Still submit the value -->
+    </div>
+
+    <div class="form-group">
+        <label asp-for="baseFare" class="control-label">Giá cơ bản</label>
+        <input asp-for="baseFare" class="form-control" />
+        <span asp-validation-for="baseFare" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="fareFor5km" class="control-label">Giá cho 5km</label>
+        <input asp-for="fareFor5km" class="form-control" />
+        <span asp-validation-for="fareFor5km" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="fareFor10km" class="control-label">Giá cho 10km</label>
+        <input asp-for="fareFor10km" class="form-control" />
+        <span asp-validation-for="fareFor10km" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="farePerkm" class="control-label">Giá cho mỗi km</label>
+        <input asp-for="farePerkm" class="form-control" />
+        <span asp-validation-for="farePerkm" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="multiplier" class="control-label">Hệ số</label>
+        <input asp-for="multiplier" class="form-control" />
+        <span asp-validation-for="multiplier" class="text-danger"></span>
+    </div>
+
+    <input type="hidden" asp-for="id" />
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary btn-block" />
+    </div>
+</form>

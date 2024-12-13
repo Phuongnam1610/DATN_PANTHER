@@ -1,0 +1,26 @@
+@if (Context.User.Identity.IsAuthenticated)
+{
+    <li class="nav-item">
+        <a class="nav-link" asp-area="" asp-controller="AppUser" asp-action="Profile">
+            <i class="fas fa-user-circle"></i> @User.Identity.Name
+        </a>
+    </li>
+
+    @if (User.HasClaim("Role","True"))
+    {
+        <li class="nav-item">
+            <a class="nav-link" asp-area="Admin" asp-controller="AdminCar" asp-action="Index">Quản trị</a>
+        </li>
+    }
+
+    <li class="nav-item">
+        <a class="nav-link" asp-area="" asp-controller="AppUser" asp-action="LogOut">Đăng xuất</a>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a asp-action="Login" asp-controller="AppUser" class="btn btn-outline-primary ml-2">Đăng Nhập</a>
+    </li>
+
+}
