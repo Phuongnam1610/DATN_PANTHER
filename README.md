@@ -9,6 +9,9 @@
   <li>FLUTTER</li>
   <li>Firebase Authentication, Firebase Cloud Message</li>
   <li>Firebase Firestore</li>
+  <li>Cổng thanh toán PayOS</li>
+  <li>Google Maps API</li>
+  <li>GEMINI</li>
 </ul>
 
 <h2>Components</h2>
